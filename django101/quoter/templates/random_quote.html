@@ -1,6 +1,12 @@
-<figure>
-    <blockquote>
-        {{ object_list.quote }}
-    </blockquote>
-    <figcaption>{{ object_list.author }}</figcaption>
-</figure>
+{% extends "_base.html" %}
+
+{% block page_content %}
+<div class="cover-container d-flex h-100 p-3 mx-auto flex-column">
+    <header class="masthead mb-auto"></header>
+    <main role="main" class="inner cover">
+          <h1 class="cover-heading">{{ object_list.quote }}</h1>
+          <p class="lead">&ndash; {{ object_list.author }}</p>
+    </main>
+    <footer class="mastfoot mt-auto"></footer>
+</div>
+{% endblock %}
