@@ -114,3 +114,79 @@ admin.site.register(Category)
 
 And that's pretty much where we were at at the end of the first workshop.  I'll commit this on the project's GitHub 
 repository and tag it "workshop-1".
+
+## Step 5 - Creating the views, URL schemes and template
+
+The first thing we need to do is to create the views.  One thing that's great with Django is its class-based views.
+
+In Django, views can be functions in which, for instance, data is retrieved from the database and passed along to a 
+specified template.
+
+They can also be a class, which means they can inherit behaviors from a lot of "generic" views which are provided with
+Django, and implement a default behavior for a lot of common use cases, such as :
+
+- TemplateView, which associates a specified template to the view
+- ListView, which lists instances of a specified model
+- DetailView, which shows the details of a single model instance
+- CreateView, UpdateView and DeleteView, which allow to create, edit and delete a single model instance, respectively
+- etc.
+
+For the purpose of this tutorial, we'll be using a modified ListView, to which we will give a random Quote model 
+instance to display.  The reason why we use a ListView instead of a DetailView is that a DetailView needs a reference
+to a single model instance, but we're not providing one as we are selecting a model instance randomly.
+
+```
+# quoter/views.py
+from django.views.generic import ListView
+from .models import Quote
+
+
+class QuoteView(ListView):
+    model = Quote  # This defines the model associated with this view
+    template_name = 'random_quote.html'  # This defines the template associated with this view
+
+    def get_queryset(self):
+        # This is a "mixin", a method defined in the generic view ListView (or one of its ancestors)
+        return Quote.objects.order_by('?').first()  # This returns a random quote in the queryset
+
+```
+
+Then we create an URL scheme in our quoter app:
+
+```
+# quoter/urls.py
+from django.conf.urls import url
+from . import views
+
+urlpatterns = [
+    url('', views.QuoteView.as_view()),
+]
+```
+
+And we add a reference to this app urls file in our project urls file:
+
+```
+# django101/urls.py
+from django.contrib import admin
+from django.urls import include, path
+
+urlpatterns = [
+    path('quoter/', include('quoter.urls')),  # Add this line
+    path('admin/', admin.site.urls),
+]
+
+```
+
+Finally, we create a template which will display the quote:
+
+```
+<!-- quoter/templates/random_quote.html -->
+<figure>
+    <blockquote>
+        {{ object_list.quote }}
+    </blockquote>
+    <figcaption>{{ object_list.author }}</figcaption>
+</figure>
+```
+
+That's it! You have a functional random quote generator.  Celebrate!
