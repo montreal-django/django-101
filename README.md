@@ -190,3 +190,64 @@ Finally, we create a template which will display the quote:
 ```
 
 That's it! You have a functional random quote generator.  Celebrate!
+
+## Step 6 - Refactor the template with some beauty
+
+Of course, we want our page to be not just functional, but beautiful.  In order to do that, we can use a base template,
+which will contain the general layout of the application's pages, and then extend that template in our random_quote.html
+template.
+
+```
+<!-- quoter/templates/_base.html -->
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" 
+          crossorigin="anonymous">
+
+    <title>Quoter App</title>
+</head>
+<body class="text-center">
+    {% block page_content %}
+    {% endblock %}
+
+    <script src="//code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+</body>
+</html>
+```
+
+In the base template above, the block identified with {% block page_content %}{% endblock %} is the part which will be
+extended in the random quote template:
+
+```
+{% extends "_base.html" %}
+
+<!-- quoter/templates/random_quote.html -->
+{% block page_content %}
+<div class="cover-container d-flex h-100 p-3 mx-auto flex-column">
+    <header class="masthead mb-auto"></header>
+    <main role="main" class="inner cover">
+          <h1 class="cover-heading">{{ object_list.quote }}</h1>
+          <p class="lead">&ndash; {{ object_list.author }}</p>
+    </main>
+    <footer class="mastfoot mt-auto"></footer>
+</div>
+{% endblock %}
+```
+
+And voilà!  A much more interesting visual proposition for our random quote page. I've added a bit more custom CSS in
+the Github repository, you can check it out!
