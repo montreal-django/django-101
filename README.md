@@ -3,6 +3,8 @@
 In the first workshop, we got everyone up to par with their environments, we chose a project to work on (a quotes 
 generator), and we started building our project.
 
+Here are the [slides that were used during the workshop](http://slides.com/canweb/django-101/#/).
+
 ## Step 1 - Making the environment ready
 
 We need to install Python3 and pipenv, as well as an IDE of our choice. For the purpose of this workshop, I used 
