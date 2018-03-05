@@ -321,3 +321,21 @@ You'll need to make a new migration and apply it :
 ```
 
 And there you have it!
+
+## Step 8 - Add tests, refactor with abstract class models, etc.
+
+Now that you have a functional application, you should want to add tests to make sure everything works properly. In
+fact, you could have started by writing the tests for your application, and THEN created the application. This is called
+TDD, or Test Driven Development. Here's a [presentation I made about this last year](http://slides.com/ctrlweb/django-3).
+This presentation also covers [key principles](http://slides.com/ctrlweb/django-3#/2) in Python developement (and in 
+programming in general), as well as [examples](http://slides.com/ctrlweb/django-3#/2/7) of compositional models using 
+abstract classes and multiple inheritance.
+
+Here's also a quick intro to [Class-Based Views](http://slides.com/ctrlweb/django-5), which we only brushed in this 
+workshop.
+
+Finally, make sure to browse through the official [Django documentation](https://docs.djangoproject.com/en/2.0/), and
+its [Tutorial](https://docs.djangoproject.com/en/2.0/intro/tutorial01/) in particular, which is an excellent source to 
+delve more deeply into the Django world.
+
+Happy coding my friends!
