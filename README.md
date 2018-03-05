@@ -313,4 +313,11 @@ class Author(models.Model):
 
 ```
 
+You'll need to make a new migration and apply it :
+
+```
+./manage.py makemigrations
+./manage.py migrate
+```
+
 And there you have it!
