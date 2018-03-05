@@ -251,3 +251,66 @@ extended in the random quote template:
 
 And voilà!  A much more interesting visual proposition for our random quote page. I've added a bit more custom CSS in
 the Github repository, you can check it out!
+
+## Step 7 - Let's use a quote generating API to populate our database... muah ah ah...
+
+Now that our quotes are displayed nicely, we could use an outside source to add quotes to our database. The way I'm
+proposing to do this is to modify our view so that it either randomly selects a quote from our database, OR it selects
+a quote from an outside source, adds it to our database, and displays it.
+
+Here is how I propose to do that:
+
+```
+# quoter/views.py
+
+import json
+import urllib
+import html
+from random import choice
+from django.views.generic import ListView
+from .models import Author, Category, Quote
+
+
+class QuoteView(ListView):
+    model = Quote
+    template_name = 'random_quote.html'
+
+    def get_queryset(self):
+        if choice([True, False]) is True:
+            return Quote.objects.order_by('?').first()
+
+        with urllib.request.urlopen("http://quotesondesign.com/wp-json/posts?filter[orderby]=rand") as url:
+            data = json.loads(url.read().decode())
+
+            category, created = Category.objects.get_or_create(
+                name='Quote from quotesondesign.com'
+            )
+
+            author, created = Author.objects.get_or_create(
+                name=data[0]['title']
+            )
+
+            quote, created = Quote.objects.get_or_create(
+                quote=html.unescape(data[0]['content'].replace('<p>', '').replace('</p>', '')),
+                defaults={'author': author, 'category': category}
+            )
+
+            return quote
+
+```
+
+Then, we need to modify our model to make the author's birthdate nullable:
+
+```
+# quoter/models.py
+
+class Author(models.Model):
+    name = models.CharField(max_length=150)
+    birthdate = models.DateField(null=True)  # null=True has been added
+
+    def __str__(self):
+        return self.name
+
+```
+
+And there you have it!
